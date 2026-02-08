@@ -1,0 +1,233 @@
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  /* More opaque, milky glass */
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  /* Softer shadow */
+  --primary-accent: #007AFF;
+  /* Apple classic blue */
+  --text-main: #000000;
+  /* Dark text for light mode */
+  --text-muted: #86868b;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  /* iPhone 15/iOS 17 style wallpaper gradient */
+  background: radial-gradient(circle at 0% 0%, #aebaf8, #f5d0fe, #d6dffe);
+  background-size: 200% 200%;
+  animation: gradientBG 15s ease infinite;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-container {
+  width: 90%;
+  max-width: 800px;
+  height: 85vh;
+  background: rgba(255, 255, 255, 0.45);
+  /* Lighter, frostier */
+  backdrop-filter: blur(25px) saturate(180%);
+  /* Strong iOS blur */
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  /* Smoother corners */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.header {
+  padding: 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+
+.messages-list {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+
+.message {
+  max-width: 75%;
+  padding: 10px 16px;
+  border-radius: 18px;
+  line-height: 1.4;
+  font-size: 0.95rem;
+  animation: fadeIn 0.25s ease-out;
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--primary-accent);
+  /* iOS Blue */
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
+}
+
+.message.bot {
+  align-self: flex-start;
+  background: #e9e9eb;
+  /* iOS Gray bubble */
+  color: #000;
+  border-bottom-left-radius: 4px;
+}
+
+.input-area {
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+}
+
+input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 16px;
+  border-radius: 20px;
+  color: #1d1d1f;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+input:focus {
+  background: #ffffff;
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+input::placeholder {
+  color: #8e8e93;
+}
+
+button {
+  background: var(--primary-accent);
+  border: none;
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s;
+  box-shadow: 0 4px 6px rgba(0, 122, 255, 0.2);
+  font-size: 0;
+  /* Hide text "Send" if present, replace with icon in future or just keep simple */
+}
+
+/* Pseudo-element for arrow icon */
+button::after {
+  content: "↑";
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #b0b0b0;
+}
+
+/* Markdown Styles inside bot messages */
+.message.bot code {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  color: #d63384;
+}
+
+.message.bot pre {
+  background: #f5f5f7;
+  padding: 12px;
+  border-radius: 12px;
+  overflow-x: auto;
+  border: 1px solid #e5e5e5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
