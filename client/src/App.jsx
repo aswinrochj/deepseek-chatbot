@@ -29,7 +29,7 @@ function App() {
 
     try {
       // Assuming backend runs on port 5000
-      const response = await axios.post('https://deepseek-chatbot-cfmy.onrender.com/', { message: input });
+      const response = await axios.post('https://deepseek-chatbot-cfmy.onrender.com/api/chat', { message: input });
       const botMessage = { role: 'bot', content: response.data.reply || "Thinking..." }; // Backend returns { reply: ... }
 
       // If backend logic is slightly different, adjust here. Assuming simple { reply: string }
