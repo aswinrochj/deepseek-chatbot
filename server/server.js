@@ -27,7 +27,13 @@ app.post("/api/chat", async (req, res) => {
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: "deepseek/deepseek-r1",
-        messages: [{ role: "user", content: message }],
+
+        // 🔥 IMPORTANT — limit token usage
+        max_tokens: 500,
+
+        messages: [
+          { role: "user", content: message }
+        ],
       },
       {
         headers: {
@@ -35,6 +41,9 @@ app.post("/api/chat", async (req, res) => {
           "Content-Type": "application/json",
           "HTTP-Referer": "https://deepseek-chatbot-beta.vercel.app/"
         },
+
+        // helps avoid timeout when Render wakes
+        timeout: 60000
       }
     );
 
@@ -46,17 +55,18 @@ app.post("/api/chat", async (req, res) => {
 
   } catch (error) {
     console.error(
-      "OpenRouter error:",
+      "OpenRouter FULL ERROR:",
       error.response?.data || error.message
     );
 
+    // clearer error to frontend
     res.status(500).json({
-      error: "Failed to fetch AI response",
+      error: "⚠ AI temporarily unavailable or credit limit reached. Try again shortly."
     });
   }
 });
 
-// Required for Render
+// Required for Render dynamic port
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
